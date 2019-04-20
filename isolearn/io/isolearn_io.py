@@ -40,7 +40,7 @@ def load(full_file_path) :
 
 			if file_type == 'csv' :
 				data = pd.read_csv(file_path + '/' + file_name, sep='\t')
-			elif file_type == 'csv' :
+			elif file_type == 'mat' :
 				data = spio.loadmat(file_path + '/' + file_name)['data_mat']
 
 			data_dict[file_name_suffix] = data

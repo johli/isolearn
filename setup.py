@@ -10,7 +10,6 @@ setuptools.setup(
     author_email="johannes.linder@hotmail.com.com",
     description="Keras Genomics Data Generators",
     long_description=long_description,
-    long_description_content_type="text/markdown",
     url="https://github.com/johli/isolearn",
     packages=setuptools.find_packages(),
     classifiers=[
