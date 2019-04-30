@@ -8,8 +8,10 @@ import scipy.sparse as sp
 
 class BatchEncoder :
     
-    def __init__(self, encoder) :
+    def __init__(self, encoder, memory_efficient=False, memory_efficient_dump_size=30000) :
         self.encoder = encoder
+        self.memory_efficient = memory_efficient
+        self.memory_efficient_dump_size = memory_efficient_dump_size
     
     def encode(self, seqs) :
         
@@ -32,9 +34,42 @@ class BatchEncoder :
     
     def encode_sparse(self, seqs) :
         n_cols = np.prod(np.ravel(list(self.encoder.encode_dims)))
-        encoding_mat = sp.lil_matrix((len(seqs), n_cols))
-        for i in range(0, len(seqs)) :
-            self.encoder.encode_inplace_sparse(seqs[i], encoding_mat, i)
+        encoding_mat = None
+
+        if not self.memory_efficient or len(seqs) <= self.memory_efficient_dump_size :
+            encoding_mat = sp.lil_matrix((len(seqs), n_cols))
+            for i in range(0, len(seqs)) :
+                self.encoder.encode_inplace_sparse(seqs[i], encoding_mat, i)
+        else :
+            dump_counter = 0
+            dump_max = self.memory_efficient_dump_size
+            encoding_acc = None
+            encoding_part = sp.lil_matrix((dump_max, n_cols))
+            seqs_left = len(seqs)
+
+            for i in range(0, len(seqs)) :
+                if dump_counter >= dump_max :
+                    if encoding_acc == None :
+                        encoding_acc = sp.csr_matrix(encoding_part)
+                    else :
+                        encoding_acc = sp.vstack([encoding_acc, sp.csr_matrix(encoding_part)])
+                    
+                    if seqs_left >= dump_max :
+                        encoding_part = sp.lil_matrix((dump_max, n_cols))
+                    else :
+                        encoding_part = sp.lil_matrix((seqs_left, n_cols))
+
+                    dump_counter = 0
+                
+                dump_counter += 1
+                seqs_left -= 1
+
+                self.encoder.encode_inplace_sparse(seqs[i], encoding_part, i % dump_max)
+
+            if encoding_part.shape[0] > 0 :
+                encoding_acc = sp.vstack([encoding_acc, sp.csr_matrix(encoding_part)])
+
+            encoding_mat = sp.csr_matrix(encoding_acc)
         
         return encoding_mat
     
@@ -452,6 +487,97 @@ class CategoricalEncoder(SequenceEncoder) :
     def decode_sparse(self, encoding_mat, row_index) :
         encoding = np.ravel(encoding_mat[row_index, :].todense())
         return self.decode(encoding)
+
+
+class IdentityEncoder(SequenceEncoder) :
+    
+    def __init__(self, seq_len, channel_map) :
+        super(IdentityEncoder, self).__init__('identity', (seq_len, len(channel_map)))
+        
+        self.seq_len = seq_len
+        self.n_channels = len(channel_map)
+        self.encode_map = channel_map
+    
+    def encode(self, seq) :
+        encoding = np.zeros((self.seq_len, self.n_channels))
+        
+        for i in range(len(seq)) :
+            channel_ix = self.encode_map[seq[i]]
+            encoding[i, channel_ix] = 1.
+
+        return encoding
+    
+    def encode_inplace(self, seq, encoding) :
+        for i in range(len(seq)) :
+            channel_ix = self.encode_map[seq[i]]
+            encoding[i, channel_ix] = 1.
+    
+    def encode_inplace_sparse(self, seq, encoding_mat, row_index) :
+        raise NotImplementError()
+    
+    def decode(self, encoding) :
+        raise NotImplementError()
+    
+    def decode_sparse(self, encoding_mat, row_index) :
+        raise NotImplementError()
+
+class SequencePadder(SequenceEncoder) :
+    
+    def __init__(self, seq_len) :
+        super(SequencePadder, self).__init__('pad', (seq_len,))
+        
+        self.seq_len = seq_len
+    
+    def encode(self, seq) :
+        encoding = np.zeros(self.seq_len)
+        
+        for i in range(len(seq)) :
+            encoding[i] = seq[i]
+
+        return encoding
+    
+    def encode_inplace(self, seq, encoding) :
+        for i in range(len(seq)) :
+            encoding[i] = seq[i]
+    
+    def encode_inplace_sparse(self, seq, encoding_mat, row_index) :
+        raise NotImplementError()
+    
+    def decode(self, encoding) :
+        raise NotImplementError()
+    
+    def decode_sparse(self, encoding_mat, row_index) :
+        raise NotImplementError()
+
+class MultiPadder(SequenceEncoder) :
+    
+    def __init__(self, seq_len, n_dims) :
+        super(MultiPadder, self).__init__('pad', (seq_len, n_dims))
+        
+        self.seq_len = seq_len
+        self.n_dims = n_dims
+    
+    def encode(self, seq) :
+        encoding = np.zeros((self.seq_len, self.n_dims))
+        
+        for i in range(len(seq)) :
+            encoding[i,] = seq[i,]
+
+        return encoding
+    
+    def encode_inplace(self, seq, encoding) :
+        for i in range(len(seq)) :
+            encoding[i,] = seq[i,]
+    
+    def encode_inplace_sparse(self, seq, encoding_mat, row_index) :
+        raise NotImplementError()
+    
+    def decode(self, encoding) :
+        raise NotImplementError()
+    
+    def decode_sparse(self, encoding_mat, row_index) :
+        raise NotImplementError()
+
 
 class SequenceExtractor :
     
