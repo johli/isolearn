@@ -86,8 +86,8 @@ gen = iso.DataGenerator(
 ### Example Notebooks (Alternative Splicing)
 These examples show how to build more complex data generators and how to integrate them into Keras or other learning algorithms. The examples are based on Alternative Splicing data from [https://github.com/Alex-Rosenberg/cell-2015](https://github.com/Alex-Rosenberg/cell-2015).
 
-[Notebook 1a: Logistic Regression of Sequence Hexamer Counts](https://nbviewer.jupyter.org/github/johli/isolearn/blob/master/example/splicing_hexamer_regression.ipynb)<br/>
-[Notebook 1b: Logistic Regression of Sequence Hexamer Counts (Multiple Cell Types)](https://nbviewer.jupyter.org/github/johli/isolearn/blob/master/example/splicing_hexamer_regression_multicell.ipynb)<br/>
-[Notebook 2a: (Keras) Sequence-Convolutional Neural Network](https://nbviewer.jupyter.org/github/johli/isolearn/blob/master/example/splicing_cnn_multicell.ipynb)<br/>
-[Notebook 2b: (Keras) Sequence-Convolutional Neural Network (Sampled Splice Junctions)](https://nbviewer.jupyter.org/github/johli/isolearn/blob/master/example/splicing_cnn_perturbed_multicell.ipynb)<br/>
+[Notebook 1a: Logistic Regression of Sequence Hexamer Counts](https://nbviewer.jupyter.org/github/johli/isolearn/blob/master/example/splicing_hexamer_regression.ipynb)
+[Notebook 1b: Logistic Regression of Sequence Hexamer Counts (Multiple Cell Types)](https://nbviewer.jupyter.org/github/johli/isolearn/blob/master/example/splicing_hexamer_regression_multicell.ipynb)
+[Notebook 2a: (Keras) Sequence-Convolutional Neural Network](https://nbviewer.jupyter.org/github/johli/isolearn/blob/master/example/splicing_cnn_multicell.ipynb)
+[Notebook 2b: (Keras) Sequence-Convolutional Neural Network (Sampled Splice Junctions)](https://nbviewer.jupyter.org/github/johli/isolearn/blob/master/example/splicing_cnn_perturbed_multicell.ipynb)
 
