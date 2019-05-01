@@ -71,7 +71,7 @@ gen = iso.DataGenerator(
         'id' : 'log_enrichment',
         'source_type' : 'dataframe',
         'source' : 'data',
-        'extractor' : lambda c, index: np.ravel(c),
+        'extractor' : lambda row, index: row['enrichment'],
         'transformer' : lambda v: np.log(v)
       }
     }
