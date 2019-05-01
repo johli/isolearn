@@ -82,7 +82,7 @@ gen = iso.DataGenerator(
 #Now we are all set to feed the data generator into Keras when training a model.
 #We can also use the data generator directly as a batch streamer by simply indexing it:
 
-print(gen[13]) #Generate batch 13
+[X], [y] = gen[13] #Generate batch 13
 ```
 
 ### Example Notebooks (Alternative Splicing)
