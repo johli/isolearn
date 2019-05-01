@@ -1,7 +1,13 @@
 # Isolearn
 
-Automated loading and processing of genomics data for use in deep learning models (Keras).
+Automated loading, processing and streaming of genomics data for use in deep learning models (Keras).
 Implements Keras data generators for loading and encoding Pandas dataframes and RNA-Seq count matrices into numerical tensors.
+
+#### When would you want to use Isolearn?
+- When you want to encode DNA sequence features (e.g. hexamer counts or one-hot encodings) of large genomic datasets, for use in downstream clustering or supervised learning algorithms.
+- When you want to stream data and encode sequence features on the fly as mini batches (for large datasets).
+- When you want seamless integration with Keras as parallelizable genomic data generators.
+- When you are building a complex multi-task model composed of several disparate data sets, for joint deep learning.
 
 ### Installation
 The latest stable version of Isolearn can be installed with pip:
@@ -16,7 +22,7 @@ cd isolearn
 python setup.py install
 ```
 
-Isolearn requires the following packages to be installed:
+#### Isolearn requires the following packages to be installed:
 - Keras >= 2.2.4
 - Pandas >= 0.24.2
 - Scipy >= 1.2.1
