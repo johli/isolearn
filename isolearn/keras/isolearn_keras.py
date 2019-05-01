@@ -705,7 +705,18 @@ class CutAlignSampler(PositionShifter) :
 
 class DataGenerator(keras.utils.Sequence) :
     
-    def __init__(self, data_ids, sources, batch_size=32, inputs=None, outputs=None, randomizers=None, shuffle=True, densify_batch_matrices=False) :
+    def __init__(self, data_ids, sources, batch_size=32, inputs=None, outputs=None, randomizers=[], shuffle=True, densify_batch_matrices=False, move_outputs_to_inputs=False) :
+        if move_outputs_to_inputs :
+            inputs.extend(outputs)
+            outputs = [
+                {
+                    'id' : 'dummy_output',
+                    'source_type' : 'zeros',
+                    'dim' : (1,),
+                    'sparsify' : False
+                }
+            ]
+
         self.data_ids = data_ids
         self.sources = sources
         self.batch_size = batch_size
