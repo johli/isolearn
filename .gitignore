@@ -14,12 +14,12 @@ __pycache__/
 *.bed
 *.fa
 
-example/data/.ipynb_checkpoints/
-example/.ipynb_checkpoints/
-example/saved_models/
-example/__pycache__/
-example/data/unprocessed_data/
-example/data/processed_data/
+examples/data/.ipynb_checkpoints/
+examples/.ipynb_checkpoints/
+examples/saved_models/
+examples/__pycache__/
+examples/data/unprocessed_data/
+examples/data/processed_data/
 
 #No images/figures
 *.png
