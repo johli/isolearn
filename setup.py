@@ -5,9 +5,9 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="isolearn",
-    version="0.1",
+    version="0.2.1",
     author="Johannes Linder",
-    author_email="johannes.linder@hotmail.com.com",
+    author_email="johannes.linder@hotmail.com",
     description="Keras Genomics Data Generators",
     long_description=long_description,
     url="https://github.com/johli/isolearn",
