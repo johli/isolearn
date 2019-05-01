@@ -67,13 +67,11 @@ gen = iso.DataGenerator(
   ],
   outputs = [
     {
-      {
-        'id' : 'log_enrichment',
-        'source_type' : 'dataframe',
-        'source' : 'data',
-        'extractor' : lambda row, index: row['enrichment'],
-        'transformer' : lambda v: np.log(v)
-      }
+      'id' : 'log_enrichment',
+      'source_type' : 'dataframe',
+      'source' : 'data',
+      'extractor' : lambda row, index: row['enrichment'],
+      'transformer' : lambda v: np.log(v)
     }
   ],
   shuffle = True
